@@ -1,0 +1,109 @@
+[
+  {
+    "emailId": "amitsharma@gmail.com",
+    "phoneNumber": "9367151912",
+    "title": "MR",
+    "firstName": "Amit",
+    "middleName": null,
+    "lastName": "Sharma",
+    "dateOfBirth": "1988-07-16",
+    "gender": "MALE",
+    "addressLine1": "Sector 12",
+    "addressLine2": "CHENNAI",
+    "pinCode": {
+      "id": 2
+    }
+  },
+  {
+    "apartmentName": "Green Villa",
+    "floorNumber": 3,
+    "listingType": "RENT",
+    "propertyType": "ROW_HOUSE",
+    "areaInSquareFeet": 1500,
+    "numberOfRooms": 4,
+    "sellingPrice": 0,
+    "securityDeposit": 75000,
+    "propertyAgeInYears": 2,
+    "rentPerMonth": 25000,
+    "available": true,
+    "petsAllowed": true,
+    "balcony": true,
+    "terrace": false,
+    "garden": true,
+    "elevator": false,
+    "parking": true,
+    "fullFurnished": true,
+    "totalFloors": 2,
+    "latitude": 28.7041,
+    "longitude": 77.1025,
+    "addressLine1": "ABC Road, Block 3",
+    "addressLine2": "Greater Noida",
+    "pinCode": {
+      "id": 6
+    },
+    "amenities": [{
+      "amenityName": "WATER_SUPPLY"
+    }, {
+      "amenityName": "SECURITY_SERVICE"
+    }, {
+      "amenityName": "WASTE_DISPOSAL"
+    }, {
+      "amenityName": "POLICE_STATION"
+    }, {
+      "amenityName": "BANK"
+    }, {
+      "amenityName": "GUEST_PARKING"
+    }]
+  },
+  {
+    "societyName": "Tata Primanti",
+    "numberOfBuildings": 5,
+    "latitude": 28.4337,
+    "longitude": 77.1005,
+    "addressLine1": "Sector 72",
+    "addressLine2": "Golf Course Extension Road",
+    "pinCode": {
+      "id": 3
+    },
+    "amenities": [{
+      "amenityName": "WATER_SUPPLY"
+    }, {
+      "amenityName": "SECURITY_SERVICE"
+    }, {
+      "amenityName": "WASTE_DISPOSAL"
+    }, {
+      "amenityName": "POLICE_STATION"
+    }, {
+      "amenityName": "BANK"
+    }, {
+      "amenityName": "GUEST_PARKING"
+    }]
+  },
+  {
+    "buildingName": "KOSMOS-2",
+    "numberOfFloors": 32,
+    "numberOfApartments": 160,
+    "latitude": 28.5025,
+    "longitude": 77.3832,
+    "addressLine1": "Sector 134",
+    "addressLine2": "Noida-Greater Noida Expy",
+    "pinCode": {
+      "id": 5,
+      "pin": "201304",
+      "areaName": "NOIDA"
+    },
+    "amenities": [{
+      "amenityName": "SWIMMING_POOL"
+    }, {
+      "amenityName": "GYM"
+    }, {
+      "amenityName": "CLUBHOUSE"
+    }, {
+      "amenityName": "CHILDRENS_PLAY_AREA"
+    }, {
+      "amenityName": "LAWN_TENNIS_COURT"
+    }, {
+      "amenityName": "BADMINTON_COURT"
+    }]
+  }
+]
