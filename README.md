@@ -1,0 +1,49 @@
+# real_estate_service 
+
+# Things to Do
+- Add the additional column in all documents
+- Add the additional column in ER diagram
+- Add the additional column in Logical diagram
+- Add the additional column in Physical diagram
+- Make Apartment on hard dependent on user
+- Create Indexes
+- Create Triggers
+- Create Stored Procedures
+- Create Functions
+- Create Views
+- Use Transactions
+- Insert the data in the database
+  - Apartment
+  - Building
+  - Society
+  - User
+  - User Buy Apartment
+  - User Rent Apartment
+  - User Visit Apartment
+  - User Owns Apartment
+- Modify Swagger Documentation
+- Generate Java Documentation
+- https://stackoverflow.com/questions/59291371/migrating-from-springfox-swagger-2-to-springdoc-open-api
+- docker run --rm   --name pg-docker -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres
+- Check if created by / modified by needs to be added.
+
+- In Demo
+  - Go through the logical diagram
+  - Go through the physical diagram
+    - Go through the tables
+    - Go through primary and foreign Keys
+    - Go through the indexes
+    - Go through the triggers and functions
+    - Go through the views
+    - Show Cascade deletes
+  - Insertion of a User 
+    - Show the database details
+  - Login of a User
+  - Add Apartment
+    - Show Ownership table
+  - Get All Apartments
+  - Delete Apartment
+  - Show Building details
+  - Show Society details
+  - Add Visit Entry
+  - Add Buy Entry
