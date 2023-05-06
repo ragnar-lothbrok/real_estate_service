@@ -65,7 +65,7 @@ CREATE TABLE user_credential
      user_id  INT4 NOT NULL,
      password VARCHAR(255) NOT NULL,
      PRIMARY KEY (user_id),
-     constraint FKdbjwsjg4k2b92kbygs6883n7r foreign key (user_id) references real_estate_user
+     constraint fk_user_credential_user_id foreign key (user_id) references real_estate_user  ON DELETE CASCADE
   );
 
 CREATE TABLE society
@@ -224,77 +224,30 @@ CREATE TABLE user_visit_apartment
 
 -- Indexes for table apartment
 
-CREATE INDEX apartment_listing_type_index
-  ON apartment (listing_type);
-
-CREATE INDEX apartment_property_type_index
-  ON apartment (property_type);
-
-CREATE INDEX apartment_selling_price_index
-  ON apartment (selling_price);
-
-CREATE INDEX apartment_number_of_rooms_index
-  ON apartment (number_of_rooms);
-
-CREATE INDEX apartment_available_index
-  ON apartment (available);
-
-CREATE INDEX apartment_pin_code_id_index
-  ON apartment (pin_code_id);
-
-CREATE INDEX building_building_name_index
-  ON building (building_name);
-
-CREATE INDEX building_pin_code_id_index
-  ON building (pin_code_id);
-
-CREATE INDEX real_estate_user_phone_number_index
-  ON real_estate_user (phone_number);
-
-CREATE INDEX real_estate_user_pin_code_id_index
-  ON real_estate_user (pin_code_id);
-
-CREATE INDEX society_society_name_index
-  ON society (society_name);
-
-CREATE INDEX society_pin_code_id_index
-  ON society (pin_code_id);
-
-CREATE INDEX apartment_images_apartment_id_index
-  ON apartment_images (apartment_id);
-
-CREATE INDEX apartment_amenities_apartment_id_index
-  ON apartment_amenities (apartment_id);
-
-CREATE INDEX building_amenities_building_id_index
-  ON building_amenities (building_id);
-
-CREATE INDEX society_amenities_society_id_index
-  ON society_amenities (society_id);
-
-CREATE INDEX user_bought_apartment_apartment_id_index
-  ON user_bought_apartment (apartment_id);
-
-CREATE INDEX user_bought_apartment_user_id_index
-  ON user_bought_apartment (user_id);
-
-CREATE INDEX user_rents_apartment_apartment_id_index
-  ON user_rents_apartment (apartment_id);
-
-CREATE INDEX user_rents_apartment_user_id_index
-  ON user_rents_apartment (user_id);
-
-CREATE INDEX user_owns_apartment_apartment_id_index
-  ON user_owns_apartment (apartment_id);
-
-CREATE INDEX user_owns_apartment_user_id_index
-  ON user_owns_apartment (user_id);
-
-CREATE INDEX user_visit_apartment_apartment_id_index
-  ON user_visit_apartment (apartment_id);
-
-CREATE INDEX user_visit_apartment_user_id_index
-  ON user_visit_apartment (user_id);
+CREATE INDEX apartment_listing_type_index ON apartment (listing_type);
+CREATE INDEX apartment_property_type_index ON apartment (property_type);
+CREATE INDEX apartment_selling_price_index ON apartment (selling_price);
+CREATE INDEX apartment_number_of_rooms_index ON apartment (number_of_rooms);
+CREATE INDEX apartment_available_index ON apartment (available);
+CREATE INDEX apartment_pin_code_id_index ON apartment (pin_code_id);
+CREATE INDEX building_building_name_index ON building (building_name);
+CREATE INDEX building_pin_code_id_index ON building (pin_code_id);
+CREATE INDEX real_estate_user_phone_number_index ON real_estate_user (phone_number);
+CREATE INDEX real_estate_user_pin_code_id_index ON real_estate_user (pin_code_id);
+CREATE INDEX society_society_name_index ON society (society_name);
+CREATE INDEX society_pin_code_id_index ON society (pin_code_id);
+CREATE INDEX apartment_images_apartment_id_index ON apartment_images (apartment_id);
+CREATE INDEX apartment_amenities_apartment_id_index ON apartment_amenities (apartment_id);
+CREATE INDEX building_amenities_building_id_index ON building_amenities (building_id);
+CREATE INDEX society_amenities_society_id_index ON society_amenities (society_id);
+CREATE INDEX user_bought_apartment_apartment_id_index ON user_bought_apartment (apartment_id);
+CREATE INDEX user_bought_apartment_user_id_index ON user_bought_apartment (user_id);
+CREATE INDEX user_rents_apartment_apartment_id_index ON user_rents_apartment (apartment_id);
+CREATE INDEX user_rents_apartment_user_id_index ON user_rents_apartment (user_id);
+CREATE INDEX user_owns_apartment_apartment_id_index ON user_owns_apartment (apartment_id);
+CREATE INDEX user_owns_apartment_user_id_index ON user_owns_apartment (user_id);
+CREATE INDEX user_visit_apartment_apartment_id_index ON user_visit_apartment (apartment_id);
+CREATE INDEX user_visit_apartment_user_id_index ON user_visit_apartment (user_id);
 
 --- Sequences
 
@@ -338,89 +291,89 @@ BEGIN
 END;
 $$
 
---$$
---CREATE TRIGGER create_user_credentials AFTER INSERT ON real_estate_user FOR ROW EXECUTE PROCEDURE insert_user_credentials();
---$$
+$$
+CREATE TRIGGER create_user_credentials AFTER INSERT ON real_estate_user FOR ROW EXECUTE PROCEDURE insert_user_credentials();
+$$
 -- End of triggers
 
 -- Stored Procedures
 --
---create or replace procedure update_apartment_owners(updated_owners_ids INTEGER[], input_apartment_id INTEGER)
---language plpgsql
---as $$
---DECLARE
---  _userId INTEGER;
---begin
---   DELETE FROM user_owns_apartment WHERE apartment_id = input_apartment_id;
---   FOREACH _userId IN ARRAY updated_owners_ids
---   LOOP
---       INSERT INTO user_owns_apartment(apartment_id, user_id) VALUES(input_apartment_id, _userId) ON CONFLICT (apartment_id, user_id) DO NOTHING ;
---   END LOOP;
---end;
---$$
+create or replace procedure update_apartment_owners(updated_owners_ids INTEGER[], input_apartment_id INTEGER)
+language plpgsql
+as $$
+DECLARE
+ _userId INTEGER;
+begin
+  DELETE FROM user_owns_apartment WHERE apartment_id = input_apartment_id;
+  FOREACH _userId IN ARRAY updated_owners_ids
+  LOOP
+      INSERT INTO user_owns_apartment(apartment_id, user_id) VALUES(input_apartment_id, _userId) ON CONFLICT (apartment_id, user_id) DO NOTHING ;
+  END LOOP;
+end;
+$$
 
 --call update_apartment_owners('{1,2}'::int[],1);
 
---create or replace procedure add_apartment_visits(visitor_ids INTEGER[], apartment_ids INTEGER[], input_visit_date date)
---language plpgsql
---as $$
---DECLARE
---  _userId INTEGER;
---  _apartmentId INTEGER;
---begin
---   FOREACH _userId IN ARRAY visitor_ids
---   LOOP
---       FOREACH _apartmentId IN ARRAY apartment_ids
---       LOOP
---           INSERT INTO user_visit_apartment(apartment_id, user_id, visited_date, interested) VALUES(_apartmentId, _userId, input_visit_date, true) ON CONFLICT (apartment_id, user_id, visited_date ) DO NOTHING ;
---       END LOOP;
---   END LOOP;
---end;
---$$
+create or replace procedure add_apartment_visits(visitor_ids INTEGER[], apartment_ids INTEGER[], input_visit_date date)
+language plpgsql
+as $$
+DECLARE
+ _userId INTEGER;
+ _apartmentId INTEGER;
+begin
+  FOREACH _userId IN ARRAY visitor_ids
+  LOOP
+      FOREACH _apartmentId IN ARRAY apartment_ids
+      LOOP
+          INSERT INTO user_visit_apartment(apartment_id, user_id, visited_date, interested) VALUES(_apartmentId, _userId, input_visit_date, true) ON CONFLICT (apartment_id, user_id, visited_date ) DO NOTHING ;
+      END LOOP;
+  END LOOP;
+end;
+$$
 
 --call add_apartment_visits('{1,2,1}'::int[],'{3}'::int[],'2023-05-01');
 
 
---create or replace procedure add_apartment_rent_details(tenant_ids INTEGER[], apartment_ids INTEGER[], in_start_date date, in_rent_per_month INTEGER,in_security_deposit INTEGER )
---language plpgsql
---as $$
---DECLARE
---  _userId INTEGER;
---  _apartmentId INTEGER;
---begin
---   FOREACH _userId IN ARRAY tenant_ids
---   LOOP
---       FOREACH _apartmentId IN ARRAY apartment_ids
---       LOOP
---           INSERT INTO user_rents_apartment(apartment_id, user_id, start_date, rent_per_month,security_deposit) VALUES(_apartmentId, _userId, in_start_date, in_rent_per_month, in_security_deposit) ON CONFLICT (apartment_id, user_id, start_date ) DO NOTHING ;
---       END LOOP;
---   END LOOP;
---end;
---$$
+create or replace procedure add_apartment_rent_details(tenant_ids INTEGER[], apartment_ids INTEGER[], in_start_date date, in_rent_per_month INTEGER,in_security_deposit INTEGER )
+language plpgsql
+as $$
+DECLARE
+ _userId INTEGER;
+ _apartmentId INTEGER;
+begin
+  FOREACH _userId IN ARRAY tenant_ids
+  LOOP
+      FOREACH _apartmentId IN ARRAY apartment_ids
+      LOOP
+          INSERT INTO user_rents_apartment(apartment_id, user_id, start_date, rent_per_month,security_deposit) VALUES(_apartmentId, _userId, in_start_date, in_rent_per_month, in_security_deposit) ON CONFLICT (apartment_id, user_id, start_date ) DO NOTHING ;
+      END LOOP;
+  END LOOP;
+end;
+$$
 --
 --call add_apartment_rent_details('{1,2,1}'::int[],'{3}'::int[],'2023-05-01', 12000, 24000);
 
 
---create or replace procedure add_apartment_purchase_details(new_owner_ids INTEGER[], apartment_ids INTEGER[], in_bought_date date)
---language plpgsql
---as $$
---DECLARE
---  _userId INTEGER;
---  _apartmentId INTEGER;
---begin
---   FOREACH _apartmentId IN ARRAY apartment_ids
---   LOOP
---       FOREACH _userId IN ARRAY new_owner_ids
---       LOOP
---           INSERT INTO user_bought_apartment(apartment_id, user_id, bought_date) VALUES(_apartmentId, _userId, in_bought_date) ON CONFLICT (apartment_id, user_id, bought_date ) DO NOTHING ;
---       END LOOP;
---   END LOOP;
---   FOREACH _apartmentId IN ARRAY apartment_ids
---   LOOP
---        call update_apartment_owners(new_owner_ids::int[], _apartmentId);
---   END LOOP;
---end;
---$$
+create or replace procedure add_apartment_purchase_details(new_owner_ids INTEGER[], apartment_ids INTEGER[], in_bought_date date)
+language plpgsql
+as $$
+DECLARE
+ _userId INTEGER;
+ _apartmentId INTEGER;
+begin
+  FOREACH _apartmentId IN ARRAY apartment_ids
+  LOOP
+      FOREACH _userId IN ARRAY new_owner_ids
+      LOOP
+          INSERT INTO user_bought_apartment(apartment_id, user_id, bought_date) VALUES(_apartmentId, _userId, in_bought_date) ON CONFLICT (apartment_id, user_id, bought_date ) DO NOTHING ;
+      END LOOP;
+  END LOOP;
+  FOREACH _apartmentId IN ARRAY apartment_ids
+  LOOP
+       call update_apartment_owners(new_owner_ids::int[], _apartmentId);
+  END LOOP;
+end;
+$$
 --
 --call add_apartment_purchase_details('{2}'::int[],'{8,9}'::int[],'2023-05-01');
 
